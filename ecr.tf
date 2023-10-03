@@ -11,7 +11,7 @@ resource "aws_ecr_repository" "services_user" {
 }
 
 resource "aws_iam_user" "ci_ecr_user" {
-  name = "ci-ecr-user"
+  name = var.ci_ecr_user_name
   force_destroy = true
 
   tags = {
@@ -20,7 +20,7 @@ resource "aws_iam_user" "ci_ecr_user" {
 }
 
 resource "aws_iam_group" "ci_ecr_group" {
-  name = "ci-ecr-group"
+  name = var.ci_ecr_group_name
 }
 
 resource "aws_iam_group_membership" "ci_user_group_membership" {

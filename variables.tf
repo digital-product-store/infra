@@ -17,3 +17,13 @@ variable "private_subnet_cidr_block" {
     type = string
     default = "10.0.2.0/24"
 }
+
+variable "ci_ecr_user_name" {
+  type = string
+  default = "ci-ecr-user"
+}
+
+variable "ci_ecr_group_name" {
+  type = string
+  default = "ci-ecr-group"
+}
