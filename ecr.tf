@@ -1,3 +1,5 @@
+# Registry
+## User
 resource "aws_ecr_repository" "services_user" {
   name = "user"
   image_tag_mutability = "IMMUTABLE"
@@ -10,6 +12,7 @@ resource "aws_ecr_repository" "services_user" {
   }
 }
 
+# User - Group - Membership
 resource "aws_iam_user" "ci_ecr_user" {
   name = var.ci_ecr_user_name
   force_destroy = true
@@ -29,6 +32,8 @@ resource "aws_iam_group_membership" "ci_user_group_membership" {
   group = aws_iam_group.ci_ecr_group.name
 }
 
+# Push Policy
+## Document
 data "aws_iam_policy_document" "services_registry_push_policy" {
  statement {
     actions = [
@@ -59,17 +64,20 @@ data "aws_iam_policy_document" "services_registry_push_policy" {
  }
 }
 
+## Policy
 resource "aws_iam_policy" "allow_access_services_ecr" {
   name = "allow-access-services-ecr"
   description = "policy allows access to services ecr"
   policy = data.aws_iam_policy_document.services_registry_push_policy.json
 }
 
+## Group attachment
 resource "aws_iam_group_policy_attachment" "ci-group-services-ecr-attachment" {
   group = aws_iam_group.ci_ecr_group.name
   policy_arn = aws_iam_policy.allow_access_services_ecr.arn
 }
 
+## Access Key Creation for user
 resource "aws_iam_access_key" "ci_ecr_user_access_key" {
   user = aws_iam_user.ci_ecr_user.name
 }
