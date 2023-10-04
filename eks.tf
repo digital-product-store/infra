@@ -106,6 +106,10 @@ resource "aws_eks_node_group" "private_node_group_1" {
     max_size = 1
   }
 
+  labels = {
+    role = "general"
+  }
+
   depends_on = [ 
     aws_iam_role_policy_attachment.store_node_group_worker_node_policy,
     aws_iam_role_policy_attachment.store_node_group_cni_policy,
