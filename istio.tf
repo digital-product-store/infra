@@ -58,3 +58,19 @@ resource "helm_release" "istio_ingress" {
     kubernetes_namespace.istio_ingress
   ]
 }
+
+# enable injection
+resource "kubernetes_labels" "istio_injection" {
+  api_version = "v1"
+  kind = "Namespace"
+
+  metadata {
+    name = "default"
+  }
+
+  labels = {
+    "istio-injection" = "enabled"
+  }
+
+  force = true
+}
