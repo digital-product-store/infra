@@ -67,3 +67,8 @@ variable "ci_ecr_group_name" {
   type = string
   default = "ci-ecr-group"
 }
+
+variable "istio_version" {
+  type = string
+  default = "1.19.1"
+}
