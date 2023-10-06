@@ -128,3 +128,99 @@ resource "aws_eks_node_group" "private_node_group_1" {
     aws_iam_role_policy_attachment.store_node_group_ec2_registry_policy,
   ]
 }
+
+# ALB
+## IAM Role
+### Policy
+resource "aws_iam_policy" "alb_controller_policy" {
+  name = "alb-controller-iam-policy"
+  policy = file("aws-policies/alb-controller-iam-policy.json")
+}
+
+### Trust Policy Document
+data "aws_iam_policy_document" "alb_controller_role_policy_doc" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type = "Federated"
+      identifiers = [aws_iam_openid_connect_provider.store_openid.arn]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.store_openid.url, "https://", "")}:sub"
+
+      values = [
+        "system:serviceaccount:${var.alb_controller_namespace}:${var.alb_controller_service_account_name}",
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${replace(aws_iam_openid_connect_provider.store_openid.url, "https://", "")}:aud"
+
+      values = [
+        "sts.amazonaws.com"
+      ]
+    }
+  }
+}
+
+### Role
+resource "aws_iam_role" "alb_controller_role" {
+  name = "store-alb-controller-role"
+  assume_role_policy = data.aws_iam_policy_document.alb_controller_role_policy_doc.json
+}
+
+### Role - Policy Attachment
+resource "aws_iam_role_policy_attachment" "alb_controller_role_policy_attachment" {
+  role = aws_iam_role.alb_controller_role.name
+  policy_arn = aws_iam_policy.alb_controller_policy.arn
+}
+
+## ALB Installation
+resource "helm_release" "alb_controller" {
+  name = "aws-load-balancer-controller"
+  chart = "aws-load-balancer-controller"
+  repository = var.alb_controller_chart_repo
+  version = var.alb_controller_chart_version
+  namespace = var.alb_controller_namespace
+
+  set {
+    name  = "clusterName"
+    value = aws_eks_cluster.store.name
+  }
+
+  set {
+    name  = "awsRegion"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "rbac.create"
+    value = "true"
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "true"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = var.alb_controller_service_account_name
+  }
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = aws_iam_role.alb_controller_role.arn
+  }
+
+  set {
+    name  = "enableServiceMutatorWebhook"
+    value = "false"
+  }
+
+  depends_on = [ aws_eks_node_group.private_node_group_1 ]
+}
