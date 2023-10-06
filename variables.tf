@@ -68,7 +68,32 @@ variable "ci_ecr_group_name" {
   default = "ci-ecr-group"
 }
 
+variable "istio_chart_repo" {
+  type = string
+  default = "https://istio-release.storage.googleapis.com/charts"
+}
+
 variable "istio_version" {
   type = string
   default = "1.19.1"
+}
+
+variable "alb_controller_namespace" {
+  type = string
+  default = "kube-system"
+}
+
+variable "alb_controller_service_account_name" {
+  type = string
+  default = "alb-controller"
+}
+
+variable "alb_controller_chart_repo" {
+  type = string
+  default = "https://aws.github.io/eks-charts"
+}
+
+variable "alb_controller_chart_version" {
+  type = string
+  default = "1.6.1"
 }
