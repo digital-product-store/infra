@@ -53,6 +53,12 @@ resource "helm_release" "istio_ingress" {
   cleanup_on_fail = true
   force_update    = false
 
+  set {
+    name = "service.type"
+    type = "string"
+    value = "NodePort"
+  }
+
   depends_on = [
     helm_release.istiod,
     kubernetes_namespace.istio_ingress
