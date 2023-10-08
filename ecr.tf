@@ -12,6 +12,19 @@ resource "aws_ecr_repository" "services_user" {
   }
 }
 
+## Product
+resource "aws_ecr_repository" "services_product" {
+  name = "product"
+  image_tag_mutability = "IMMUTABLE"
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    Name = "product"
+  }
+}
+
 # User - Group - Membership
 resource "aws_iam_user" "ci_ecr_user" {
   name = var.ci_ecr_user_name
@@ -59,7 +72,8 @@ data "aws_iam_policy_document" "services_registry_push_policy" {
     ]
 
     resources = [
-      aws_ecr_repository.services_user.arn
+      aws_ecr_repository.services_user.arn,
+      aws_ecr_repository.services_product.arn,
     ]
  }
 }
@@ -86,6 +100,13 @@ output "services_user_ecr_registry" {
     value = {
         url = aws_ecr_repository.services_user.repository_url
         arn = aws_ecr_repository.services_user.arn
+    }
+}
+
+output "services_product_ecr_registry" {
+    value = {
+        url = aws_ecr_repository.services_product.repository_url
+        arn = aws_ecr_repository.services_product.arn
     }
 }
 
