@@ -97,3 +97,8 @@ variable "alb_controller_chart_version" {
   type = string
   default = "1.6.1"
 }
+
+variable "product_uploads_s3_bucket_name" {
+  type = string
+  default = "product-uploads--1a0f59f0-d98d-437f-98d0-1ccac9e2d1d2"
+}
