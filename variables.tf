@@ -58,6 +58,16 @@ variable "private_subnet_3_az" {
   default = "eu-west-1c"
 }
 
+variable "private_subnet_4_cidr" {
+  type = string
+  default = "10.0.6.0/24"
+}
+
+variable "private_subnet_4_az" {
+  type = string
+  default = "eu-west-1a"
+}
+
 variable "ci_ecr_user_name" {
   type = string
   default = "ci-ecr-user"
@@ -101,4 +111,34 @@ variable "alb_controller_chart_version" {
 variable "product_uploads_s3_bucket_name" {
   type = string
   default = "product-uploads--1a0f59f0-d98d-437f-98d0-1ccac9e2d1d2"
+}
+
+variable "product_db_postgres_version" {
+  type = string
+  default = "15.4"
+}
+
+variable "product_db_postgres_param_group" {
+  type = string
+  default = "default.postgres15"
+}
+
+variable "product_db_identifier" {
+  type = string
+  default = "product-db-0"
+}
+
+variable "product_db_username" {
+  type = string
+  default = "postgres"
+}
+
+variable "product_db_password" {
+  type = string
+  default = "postgres"
+}
+
+variable "product_db_name" {
+  type = string
+  default = "postgres"
 }

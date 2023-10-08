@@ -68,6 +68,16 @@ resource "aws_subnet" "private_subnet_3" {
   }
 }
 
+resource "aws_subnet" "private_subnet_4" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.private_subnet_4_cidr
+  availability_zone = var.private_subnet_4_az
+
+  tags = {
+    "Name" = "private-subnet-4"
+  }
+}
+
 # Internet Gateway for public subnets
 resource "aws_internet_gateway" "main_igw" {
   vpc_id = aws_vpc.main.id
