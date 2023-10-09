@@ -142,3 +142,18 @@ variable "product_db_name" {
   type = string
   default = "postgres"
 }
+
+variable "application_helm_repository" {
+  type = string
+  default = "https://digital-product-store.github.io/helm_charts/"
+}
+
+variable "request_authentication_version" {
+  type = string
+  default = "0.1.0"
+}
+
+variable "request_authentication_jwks" {
+  type = string
+  default = "eyJrZXlzIjogW3sia3R5IjogIlJTQSIsIm4iOiAiMHJyN0FzZFEzSDVxQUNaa1ZaSV9EUkFTd0FScnZEZ0F4aUdaZ09udGRvWHJBVk5Qb3c4Z3dfYmZrU2psb1NfV1YxNnRvWGpKRWZaT0NCR0ROcFcyT1Q5cUFkaFJRQzBvOE5jOTB5b2FoQmtodjlaYWFJd1lCakhCXzZRN3JOTkxya2tqQ20xcGpFbU1ZeS1nWWNKVm1fRmdDUjItZ0lFUjZFSW5YQW1IMDhxWEd1al8weUhBc2pmTjc5TXpDY19oV09icllBUWVTZllVVDV3SGVOZ01jbExGemx5cFNRb0hGNGpOQWVaSTZ2M0swOE9SeDdMT3AtQXV0STFmR0g4dVRuRXNDTGc4ZjJCNHhIc1A5VnE4bmJuZk9BY3FCVkdFWFFnNHVDQ2JncWRhNWJReVpMQmtmSFR5NnJoVkdxemxGcVdOd2RidFh2TUVTbXpXdmh3QnR3IiwiZSI6ICJBUUFCIiwiYWxnIjogIlJTMjU2In1dfQ=="
+}
