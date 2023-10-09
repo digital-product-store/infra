@@ -45,3 +45,5 @@ resource "aws_db_instance" "product_db" {
 output "product_db_endpoint" {
   value = aws_db_instance.product_db.endpoint
 }
+
+# TODO: GRANT rds_iam TO postgres;
